@@ -9,19 +9,26 @@ import TransitionsModal from '../Components/modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPhoto,deletePhoto } from '../features/favorite/favoriteSlice';
 import { selectFavorites } from '../features/favorite/favoriteSlice';
+import DownloadIcon from '@mui/icons-material/Download'
 
 export default function FavoritesPage() {
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
+    const handleOpen = (description,id,width, height, likes,updated_at, urls) => {
+        setOpen(true)
+        setData({description, id, width, height,likes, updated_at,urls})
+    };
     const handleClose = () => setOpen(false);
     const photosFavs = useSelector(selectFavorites);
     const dispatch = useDispatch()
     const handleDelete = photo => {
         dispatch(deletePhoto(photo))
     }
-  
+    const [data,setData] = useState({
+        description: '',
+        id: ''
+    })
     
-    
+    console.log(photosFavs)
     return (
         <>
         <input className='input-search' type='text' placeholder='search your photos' />
@@ -42,8 +49,14 @@ export default function FavoritesPage() {
                        <>
                 <IconButton
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+        
+                        >
+                    <DownloadIcon />
+                </IconButton>
+                <IconButton
+                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                         aria-label={`info about ${item.title}`}
-                        onClick={handleOpen}
+                        onClick={()=> handleOpen(item.description,item.id,item.width,item.height,item.likes,item.updated_at,item.urls.full,item.urls.thumb)}
                         >
                     <InfoIcon />
                 </IconButton>
@@ -60,44 +73,7 @@ export default function FavoritesPage() {
                 </ImageListItem>
               ))}
             </ImageList>
-        {/*<ImageList sx={{ width: '90%', margin: '0 auto'}}>
-        
-          {itemData.map((item) => (
-            <ImageListItem key={item.img}>
-              <img
-                src={`${item.img}?w=248&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.title}
-                loading="lazy"
-              />
-              <ImageListItemBar
-                title={item.title}
-                subtitle={item.author}
-                actionIcon={
-                <>
-                <IconButton
-                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                aria-label={`info about ${item.title}`}
-                onClick={handleOpen}
-                >
-                    <InfoIcon />
-                </IconButton>
-
-                {photosFavs.map((photo,i) => (
-                 <IconButton key={i}
-                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                onClick={()=> handleSave(photo)}
-                >
-                    <FavoriteIcon/>
-                </IconButton> )) } 
-                </>    
-                }
-              />
-            </ImageListItem>
-          ))}
-        </ImageList>*/}
-
-      <TransitionsModal open={open} handleClose={handleClose}/>
+      <TransitionsModal open={open} handleClose={handleClose} data={data}/>
         </>
       );  }
     const itemData = [

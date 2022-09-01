@@ -29,7 +29,7 @@ export const favoriteSlice = createSlice({
             saveToStorage(state.photos)
         },
         editPhoto: (state, action)=>{
-            //ADD TODO
+            
             saveToStorage(state.photos)
         }
     }

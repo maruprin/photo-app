@@ -5,6 +5,10 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
+import { selectFavorites } from '../features/favorite/favoriteSlice';
+import { useSelector } from 'react-redux';
+import IconButton from '@mui/material/IconButton';
+
 
 const style = {
   position: 'absolute',
@@ -18,10 +22,17 @@ const style = {
   p: 4,
 };
 
+
+
+
 export default function TransitionsModal(props) {
-
-
+const photosFavs = useSelector(selectFavorites);
+// const handleInfo = () => {
+//     console.log('apretaste infoo')
+// }
+//console.log(photosFavs)
   return (
+  
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -37,15 +48,28 @@ export default function TransitionsModal(props) {
         <Fade in={props.open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Descripción de la foto:
+                Información: 
+
             </Typography>
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-             Añade la descripción que quieras 
-             <EditIcon/>
+                Descripción: {props.data.description}
+                  <IconButton 
+                sx={{ color: 'black' }}
+                >
+                    <EditIcon/>
+                </IconButton> 
+                <br/>
+                Width: {props.data.width}<br/>
+                Height: {props.data.height}<br/>
+                Likes: {props.data.likes}<br/>
+                Date: {props.data.updated_at}<br/>
+
+            
             </Typography>
           </Box>
         </Fade>
       </Modal>
     </div>
-  );
+    )
+    
 }
