@@ -3,20 +3,26 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) => {
     const baseUrl = 'https://api.unsplash.com/'
     const apiKey = 'rWu0S9Zt18V3bWP9sXYyq1dVx3pc9Ut3CK7QUlbUlcQ'
-    query= 'dog'
-    const response = await fetch(`${baseUrl}search/photos?query=${query}&client_id=${apiKey}&per_page=10`);
-    const json = await response.json();
-    console.log(json.results)
-    return json.results;
+    let url;
+   
+    if(query&&query.length){
+      url = `${baseUrl}search/photos?query=${query}&client_id=${apiKey}&per_page=28`
+      const response = await fetch(url);
+      const json = await response.json();
+      return json.results;
+    } else {
+      url = `${baseUrl}photos/random?client_id=${apiKey}&count=28`
+      const response = await fetch(url);
+      const json = await response.json();
+      return json;
+    }
+   
   })
 
-  export const selectPhotos = (state) => state.photos;
-  
   const searchSlice = createSlice({
     name: 'photos',
     initialState:{
-        resultsStatic:[],
-        filteredResults:[],
+        results:[],
         isLoading: false,
         hasError: false
     },
@@ -32,7 +38,7 @@ export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) 
         .addCase(fetchPhotos.fulfilled, (state, action) => {
           state.isLoading = false
           state.hasError = false
-          state.resultsStatic = action.payload
+          state.results = action.payload
           
         })
         .addCase(fetchPhotos.rejected, (state) => {
@@ -46,3 +52,4 @@ export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) 
 
  
   export default searchSlice.reducer;
+  export const selectPhotos = (state) => state.photos.results;

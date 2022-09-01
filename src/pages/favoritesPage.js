@@ -1,18 +1,66 @@
-import * as React from 'react';
+import {useState} from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import InfoIcon from '@mui/icons-material/Info';
+import TransitionsModal from '../Components/modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPhoto,deletePhoto } from '../features/favorite/favoriteSlice';
+import { selectFavorites } from '../features/favorite/favoriteSlice';
 
 export default function FavoritesPage() {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const photosFavs = useSelector(selectFavorites);
+    const dispatch = useDispatch()
+    const handleDelete = photo => {
+        dispatch(deletePhoto(photo))
+    }
+  
+    
+    
     return (
         <>
         <input className='input-search' type='text' placeholder='search your photos' />
-        <ImageList sx={{ width: '90%', margin: '0 auto'}}>
+
+        <ImageList  sx={{ width: '90%', margin: '0 auto', }}>
+              {photosFavs && photosFavs.length && photosFavs.map((item,i) => (
+                <ImageListItem key={i} >
+                  <img
+                    src={`${item.urls.thumb}?w=248&fit=crop&auto=format&h=300`}
+                    alt={item.alt_description}
+                    loading="lazy"
+                  />
+                  <ImageListItemBar
+                  sx={{height: 50}}
+                    title={item.description}
+                    subtitle={item.author}
+                    actionIcon={
+                       <>
+                <IconButton
+                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                        aria-label={`info about ${item.title}`}
+                        onClick={handleOpen}
+                        >
+                    <InfoIcon />
+                </IconButton>
+                         
+                 <IconButton 
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                onClick={()=> handleDelete(item)}
+                >
+                    <FavoriteIcon/>
+                </IconButton> 
+                         </>
+                    }
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList>
+        {/*<ImageList sx={{ width: '90%', margin: '0 auto'}}>
         
           {itemData.map((item) => (
             <ImageListItem key={item.img}>
@@ -26,21 +74,30 @@ export default function FavoritesPage() {
                 title={item.title}
                 subtitle={item.author}
                 actionIcon={
-                  <IconButton
-                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                    aria-label={`info about ${item.title}`}
-                  >
+                <>
+                <IconButton
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                aria-label={`info about ${item.title}`}
+                onClick={handleOpen}
+                >
+                    <InfoIcon />
+                </IconButton>
 
-                    <EditIcon/>
+                {photosFavs.map((photo,i) => (
+                 <IconButton key={i}
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                onClick={()=> handleSave(photo)}
+                >
                     <FavoriteIcon/>
-                    
-                  </IconButton>
+                </IconButton> )) } 
+                </>    
                 }
               />
             </ImageListItem>
           ))}
-        </ImageList>
-      
+        </ImageList>*/}
+
+      <TransitionsModal open={open} handleClose={handleClose}/>
         </>
       );  }
     const itemData = [
