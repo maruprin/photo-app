@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download'
-import TransitionsModal2 from './modalEdit';
+import ChildrenModal from './modalEdit';
 
 const style = {
   position: 'absolute',
@@ -74,7 +74,7 @@ console.log(open2)
                 Width: {props.data.width}<br/>
                 Height: {props.data.height}<br/>
                 Likes: {props.data.likes}<br/>
-                Date: {props.data.dateImported}<br/>
+                Date: {props.data.updated_at}<br/>
                 
             
             </Typography>
@@ -90,7 +90,7 @@ console.log(open2)
           </Box>
         </Fade>
       </Modal>
-      <TransitionsModal2 open2={open2} handleClose2={handleClose2} data={props.data} />
+      <ChildrenModal open2={open2} handleClose1={props.handleClose} handleClose2={handleClose2} data={props.data} />
     </div>
     )
     

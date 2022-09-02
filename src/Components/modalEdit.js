@@ -1,12 +1,9 @@
-import { useState } from 'react'; 
+import { useEffect, useState } from 'react'; 
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
-import EditIcon from '@mui/icons-material/Edit';
-import IconButton from '@mui/material/IconButton';
-import DownloadIcon from '@mui/icons-material/Download'
 import { Button, TextareaAutosize } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { editPhoto } from '../features/favorite/favoriteSlice';
@@ -23,27 +20,22 @@ const style = {
   p: 4,
 };
 
-export default function TransitionsModal2(props) {
-    const [open2, setOpen2] = useState(false);
-    const handleClose2 = () => setOpen2(false);
+export default function ChildrenModal(props) {
     const [edit, setEdit] = useState(false)
     const [descriptionPhoto, setDescriptionPhoto] = useState('')
     const dispatch = useDispatch()
-    const handleOpen2 = () => {
-         setOpen2(true)
-         console.log('entro en modal 2')
-     };
-   
-    const handleClickSaveDescription = (id) => {
-         dispatch(editPhoto({ id, descriptionPhoto }));
+
+    const handleClickSaveDescription = () => {
+         dispatch(editPhoto({ id: props.data.id, descriptionPhoto }));
          setEdit(false);
-         handleClose2()
+         props.handleClose2();
+         props.handleClose1();
        };
 
-      const handleChangeOfDescription = (e) => {
-        setDescriptionPhoto(e.target.value);
-      };
-    console.log(props.open2)
+    useEffect(()=>{
+        setDescriptionPhoto(props.data.description)
+    },[props.data])
+
     return (
       <div>
         <Modal
@@ -65,13 +57,12 @@ export default function TransitionsModal2(props) {
               </Typography>
               <Typography id="transition-modal-description" sx={{ mt: 2 }}>
 
-
               <TextareaAutosize
               aria-label="minimum height"
               minRows={7}
               style={{ width: 400 }}
-              value={props.data.description}
-              onChange={(e) => handleChangeOfDescription(e)}
+              value={descriptionPhoto}
+              onChange={(e) => setDescriptionPhoto(e.target.value)}
             ></TextareaAutosize>
             <Button
               sx={{

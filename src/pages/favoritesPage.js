@@ -33,10 +33,11 @@ export default function FavoritesPage(props) {
     const handleDelete = photo => {
         dispatch(deletePhoto(photo))
     }
-   const handleOpen = (description,id,width, height, likes,dateImported, urls) => {
-        setOpen(true)
-        setData({description, id, width, height,likes, dateImported,urls})
-    };
+    
+    const handleOpen = (item) => {
+            setOpen(true)
+            setData(item)
+        };
     useEffect(()=>{
         setMyPhotos(photosFavs)
     },[photosFavs])
@@ -97,7 +98,7 @@ console.log(myPhotos[8])
                 <IconButton
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                         aria-label={`info about ${item.title}`}
-                        onClick={()=> handleOpen(item.description,item.id,item.width,item.height,item.likes,item.dateImported,item.urls.full,item.urls.thumb)}
+                        onClick={()=> handleOpen(item)}
                         >
                     <InfoIcon />
                 </IconButton>
