@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -7,34 +7,80 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import InfoIcon from '@mui/icons-material/Info';
 import TransitionsModal from '../Components/modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPhoto,deletePhoto } from '../features/favorite/favoriteSlice';
+import { deletePhoto } from '../features/favorite/favoriteSlice';
 import { selectFavorites } from '../features/favorite/favoriteSlice';
-import DownloadIcon from '@mui/icons-material/Download'
+import SelectOrder from '../Components/selectOrder';
 
-export default function FavoritesPage() {
+
+export default function FavoritesPage(props) {
     const [open, setOpen] = useState(false);
-    const handleOpen = (description,id,width, height, likes,updated_at, urls) => {
-        setOpen(true)
-        setData({description, id, width, height,likes, updated_at,urls})
-    };
-    const handleClose = () => setOpen(false);
+    const [searchTerm, setSearchTerm] = useState('')
+    const [orderBy, setOrderBy] = useState('');
+    const [myPhotos, setMyPhotos] = useState([])
+    const [data,setData] = useState({
+        description: '',
+        id: '',
+        width: '',
+        height: '',
+        likes: '',
+        date: '',
+        urls: ''
+    })
     const photosFavs = useSelector(selectFavorites);
     const dispatch = useDispatch()
+    const handleClose = () => setOpen(false);
+    
     const handleDelete = photo => {
         dispatch(deletePhoto(photo))
     }
-    const [data,setData] = useState({
-        description: '',
-        id: ''
-    })
+   const handleOpen = (description,id,width, height, likes,dateImported, urls) => {
+        setOpen(true)
+        setData({description, id, width, height,likes, dateImported,urls})
+    };
+    useEffect(()=>{
+        setMyPhotos(photosFavs)
+    },[photosFavs])
     
-    console.log(photosFavs)
+    useEffect(()=>{
+        let filterPhotos;
+        if(searchTerm.length){
+           filterPhotos = photosFavs.filter(p => p.description && p.description.toLowerCase().includes(searchTerm.toLowerCase()));   
+        } else {
+            filterPhotos = photosFavs
+        }
+        const arrOrderPhotos = [...filterPhotos]
+        
+        switch (orderBy){
+            case 'width':
+                arrOrderPhotos.sort((a,b)=>a.width - b.width)
+                break;
+            case 'height':
+                arrOrderPhotos.sort((a,b)=>a.height - b.height)
+                break;
+            case 'likes':
+                arrOrderPhotos.sort((b,a)=>a.likes - b.likes)
+                break;
+            case 'date':
+                arrOrderPhotos.sort((b,a)=>a.date - b.date)
+                break;
+
+        }
+        setMyPhotos(arrOrderPhotos)
+
+    },[searchTerm,orderBy,photosFavs])
+console.log(myPhotos)
+console.log(myPhotos[8])
+    //const filterPhotos = searchTerm.length ? myPhotos.filter(p => p.description.toLowerCase().includes(searchTerm.toLowerCase())) : myPhotos;
+      
     return (
         <>
-        <input className='input-search' type='text' placeholder='search your photos' />
+        <input className='input-search' type='text' onChange={(e)=>setSearchTerm(e.target.value)} placeholder='search by description' /> 
+        
+        <SelectOrder orderBy={orderBy} setOrderBy={setOrderBy}/>
 
         <ImageList  sx={{ width: '90%', margin: '0 auto', }}>
-              {photosFavs && photosFavs.length && photosFavs.map((item,i) => (
+              {myPhotos && myPhotos.length && myPhotos.map((item,i) => (
+                
                 <ImageListItem key={i} >
                   <img
                     src={`${item.urls.thumb}?w=248&fit=crop&auto=format&h=300`}
@@ -47,16 +93,11 @@ export default function FavoritesPage() {
                     subtitle={item.author}
                     actionIcon={
                        <>
-                <IconButton
-                        sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-        
-                        >
-                    <DownloadIcon />
-                </IconButton>
+                
                 <IconButton
                         sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                         aria-label={`info about ${item.title}`}
-                        onClick={()=> handleOpen(item.description,item.id,item.width,item.height,item.likes,item.updated_at,item.urls.full,item.urls.thumb)}
+                        onClick={()=> handleOpen(item.description,item.id,item.width,item.height,item.likes,item.dateImported,item.urls.full,item.urls.thumb)}
                         >
                     <InfoIcon />
                 </IconButton>
@@ -76,78 +117,4 @@ export default function FavoritesPage() {
       <TransitionsModal open={open} handleClose={handleClose} data={data}/>
         </>
       );  }
-    const itemData = [
-      {
-        img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-        title: 'Breakfast',
-        author: '@bkristastucchio',
-        rows: 2,
-        cols: 2,
-        featured: true,
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-        title: 'Burger',
-        author: '@rollelflex_graphy726',
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-        title: 'Camera',
-        author: '@helloimnik',
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',
-        title: 'Coffee',
-        author: '@nolanissac',
-        cols: 2,
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1533827432537-70133748f5c8',
-        title: 'Hats',
-        author: '@hjrc33',
-        cols: 2,
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62',
-        title: 'Honey',
-        author: '@arwinneil',
-        rows: 2,
-        cols: 2,
-        featured: true,
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1516802273409-68526ee1bdd6',
-        title: 'Basketball',
-        author: '@tjdragotta',
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1518756131217-31eb79b20e8f',
-        title: 'Fern',
-        author: '@katie_wasserman',
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1597645587822-e99fa5d45d25',
-        title: 'Mushrooms',
-        author: '@silverdalex',
-        rows: 2,
-        cols: 2,
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af',
-        title: 'Tomato basil',
-        author: '@shelleypauls',
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1471357674240-e1a485acb3e1',
-        title: 'Sea star',
-        author: '@peterlaster',
-      },
-      {
-        img: 'https://images.unsplash.com/photo-1589118949245-7d38baf380d6',
-        title: 'Bike',
-        author: '@southside_customs',
-        cols: 2,
-      },
-    ];
-
-   
+    

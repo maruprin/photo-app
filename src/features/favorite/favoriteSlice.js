@@ -8,9 +8,7 @@ const getFromStorage = () => {
 
 
 const saveToStorage = photos => { 
-
     localStorage.setItem(storageKey, JSON.stringify(photos))
-    //console.log(photos)
 }
 
 export const favoriteSlice = createSlice({
@@ -20,7 +18,7 @@ export const favoriteSlice = createSlice({
     },
     reducers: {
         addPhoto: (state, action) => {
-            state.photos.push(action.payload)
+            state.photos.push({...action.payload, dateImported: new Date().getTime()});
             saveToStorage(state.photos)
         },
         deletePhoto: (state, action) => {
@@ -29,7 +27,16 @@ export const favoriteSlice = createSlice({
             saveToStorage(state.photos)
         },
         editPhoto: (state, action)=>{
-            
+            const copyStatePhotos = [...state.photos];
+            const editIndex = copyStatePhotos.findIndex(
+                      (photo) => photo.id === action.payload.id
+                     );
+            const newPhoto = {
+                    ...copyStatePhotos[editIndex],
+                    description: action.payload.descriptionPhoto,
+            };  
+            copyStatePhotos[editIndex] = newPhoto;
+            state.photos = copyStatePhotos;
             saveToStorage(state.photos)
         }
     }

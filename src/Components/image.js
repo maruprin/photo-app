@@ -20,12 +20,13 @@ export default function Image(props){
     //cambiar el icono cuando apriete la persona
     const [icon, setIcon] = useState('')
     
-    useEffect(() => {const selectedPhoto = photosFavs.find((photo) => photo.id === item.id) 
-    if(selectedPhoto){
-        setIcon(<FavoriteIcon/>)
-    } else {
-        setIcon(<FavoriteBorderIcon/>)
-    }
+    useEffect(() => {
+      const selectedPhoto = photosFavs.find((photo) => photo.id === item.id) 
+      if(selectedPhoto){
+          setIcon(<FavoriteIcon/>)
+      } else {
+          setIcon(<FavoriteBorderIcon/>)
+      }
     },[photosFavs,item])
     
 

@@ -1,14 +1,13 @@
-import * as React from 'react';
+import { useState } from 'react'; 
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
-import { selectFavorites } from '../features/favorite/favoriteSlice';
-import { useSelector } from 'react-redux';
 import IconButton from '@mui/material/IconButton';
-
+import DownloadIcon from '@mui/icons-material/Download'
+import TransitionsModal2 from './modalEdit';
 
 const style = {
   position: 'absolute',
@@ -22,17 +21,30 @@ const style = {
   p: 4,
 };
 
-
-
-
 export default function TransitionsModal(props) {
-const photosFavs = useSelector(selectFavorites);
-// const handleInfo = () => {
-//     console.log('apretaste infoo')
-// }
-//console.log(photosFavs)
+  const [open2, setOpen2] = useState(false);
+   const handleClose2 = () => setOpen2(false);
+   const handleOpen2 = () => {
+        setOpen2(true)
+        console.log('entro en modal 2')
+    };
+    const downloadImage = () => {
+        fetch(props.data.urls)
+          .then(response => response.blob())
+          .then(blobObject => {
+            const blob = window.URL.createObjectURL(blobObject)
+            const anchor = document.createElement('a')
+            anchor.style.display = 'none'
+            anchor.href = blob
+            anchor.download = `${props.data.id}.png`
+            document.body.appendChild(anchor)
+            anchor.click()
+            window.URL.revokeObjectURL(blob)
+          })
+          .catch(() => console.log("The image couldn't be downloaded."))
+      }
+console.log(open2)
   return (
-  
     <div>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -54,21 +66,31 @@ const photosFavs = useSelector(selectFavorites);
             <Typography id="transition-modal-description" sx={{ mt: 2 }}>
                 Descripción: {props.data.description}
                   <IconButton 
-                sx={{ color: 'black' }}
+                sx={{ color: '#2B4865' }}
                 >
-                    <EditIcon/>
+                    <EditIcon onClick={handleOpen2}/>
                 </IconButton> 
                 <br/>
                 Width: {props.data.width}<br/>
                 Height: {props.data.height}<br/>
                 Likes: {props.data.likes}<br/>
-                Date: {props.data.updated_at}<br/>
-
+                Date: {props.data.dateImported}<br/>
+                
             
             </Typography>
+            Download here 
+            <IconButton
+                        sx={{ color: '#2B4865' }}
+                        onClick={downloadImage}
+                        >
+                        
+                    <DownloadIcon />
+                </IconButton>
+            
           </Box>
         </Fade>
       </Modal>
+      <TransitionsModal2 open2={open2} handleClose2={handleClose2} data={props.data} />
     </div>
     )
     
