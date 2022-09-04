@@ -4,7 +4,10 @@ import { fetchPhotos, selectPages } from '../features/search/searchSlice';
 import { useDispatch, useSelector } from "react-redux";
 import { selectPhotos } from '../features/search/searchSlice';
 import Image from '../Components/image';
-import { Pagination } from '@mui/material';
+import { createTheme, Pagination, ThemeProvider } from '@mui/material';
+import { paletaPagination } from '../styles/paletaPagination';
+
+
 
 export default function SearchPage() {
     
@@ -34,7 +37,9 @@ export default function SearchPage() {
             <Image key={i} item={item} />
             ))}
         </ImageList>
-        <Pagination count={totalPages} page={parseInt(currentPage)} onChange={(e,value)=> handlePageChange(e,value)} />
+        <ThemeProvider theme={paletaPagination}>
+        <Pagination count={totalPages} page={parseInt(currentPage)} onChange={(e,value)=> handlePageChange(e,value)} variant="outlined" color="primary" sx={{ width: "fit-content", margin: "0 auto 5px auto" }} />
+        </ThemeProvider>
         </>
     );
 }

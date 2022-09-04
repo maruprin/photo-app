@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import DownloadIcon from '@mui/icons-material/Download'
-import ChildrenModal from './modalEdit';
+import ChildrenModal from './childrenModal';
 
 const style = {
   position: 'absolute',
@@ -26,10 +26,8 @@ export default function TransitionsModal(props) {
    const handleClose2 = () => setOpen2(false);
    const handleOpen2 = () => {
         setOpen2(true)
-        console.log('entro en modal 2')
     };
     const downloadImage = () => {
-        console.log(props)
         fetch(props.data.urls.full)
           .then(response => response.blob())
           .then(blobObject => {
@@ -44,7 +42,7 @@ export default function TransitionsModal(props) {
           })
           .catch(() => console.log("The image couldn't be downloaded."))
       }
-console.log(open2)
+
   return (
     <div>
       <Modal

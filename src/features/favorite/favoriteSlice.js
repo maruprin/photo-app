@@ -1,12 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const storageKey = 'favorites'
-
 const getFromStorage = () => {
     return localStorage.getItem(storageKey) ? JSON.parse(localStorage.getItem(storageKey)) : []
 }
-
-
 const saveToStorage = photos => { 
     localStorage.setItem(storageKey, JSON.stringify(photos))
 }
@@ -19,8 +16,6 @@ export const favoriteSlice = createSlice({
     reducers: {
         addPhoto: (state, action) => {
             state.photos.push({...action.payload, dateImported: new Date().getTime()});
-            console.log(new Date().getTime())
-            console.log({...action.payload, dateImported: new Date().getTime()})
             saveToStorage(state.photos)
         },
         deletePhoto: (state, action) => {

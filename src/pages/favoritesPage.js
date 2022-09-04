@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deletePhoto } from '../features/favorite/favoriteSlice';
 import { selectFavorites } from '../features/favorite/favoriteSlice';
 import SelectOrder from '../Components/selectOrder';
-
-
+import { Pagination, ThemeProvider } from '@mui/material';
+import { paletaPagination } from '../styles/paletaPagination';
+ 
 export default function FavoritesPage(props) {
     const [open, setOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('')
@@ -26,22 +27,30 @@ export default function FavoritesPage(props) {
         date: '',
         urls: ''
     })
-    const photosFavs = useSelector(selectFavorites);
-    const dispatch = useDispatch()
-    const handleClose = () => setOpen(false);
     
+    const [currentPage, setCurrentPage] = useState(1)
+
+    const photosFavs = useSelector(selectFavorites);
+    
+    const dispatch = useDispatch()
+    const photosPerPages = 12
+    
+    const handleClose = () => setOpen(false);
     const handleDelete = photo => {
         dispatch(deletePhoto(photo))
     }
-    
     const handleOpen = (item) => {
             setOpen(true)
             setData(item)
         };
+    const handleFavsChange = (e,value) => {
+        setCurrentPage(value);
+   
+    }
+
     useEffect(()=>{
         setMyPhotos(photosFavs)
     },[photosFavs])
-    
     useEffect(()=>{
         let filterPhotos;
         if(searchTerm.length){
@@ -64,14 +73,15 @@ export default function FavoritesPage(props) {
             case 'date':
                 arrOrderPhotos.sort((b,a)=>a.date - b.date)
                 break;
-
+            default:
+                break;
         }
         setMyPhotos(arrOrderPhotos)
 
     },[searchTerm,orderBy,photosFavs])
-console.log(myPhotos)
-
-    //const filterPhotos = searchTerm.length ? myPhotos.filter(p => p.description.toLowerCase().includes(searchTerm.toLowerCase())) : myPhotos;
+    
+    const numPages = Math.ceil(myPhotos.length/photosPerPages)
+    
       
     return (
         <>
@@ -80,7 +90,7 @@ console.log(myPhotos)
         <SelectOrder orderBy={orderBy} setOrderBy={setOrderBy}/>
 
         <ImageList  sx={{ width: '90%', margin: '0 auto', }}>
-              {myPhotos && myPhotos.length && myPhotos.map((item,i) => (
+              {myPhotos && myPhotos.length && myPhotos.slice((currentPage-1)*photosPerPages,currentPage*photosPerPages).map((item,i) => (
                 
                 <ImageListItem key={i} >
                   <img
@@ -115,7 +125,10 @@ console.log(myPhotos)
                 </ImageListItem>
               ))}
             </ImageList>
-      <TransitionsModal open={open} handleClose={handleClose} data={data}/>
+            <ThemeProvider theme={paletaPagination}>
+            <Pagination count={numPages} page={parseInt(currentPage)} onChange={(e,value)=> handleFavsChange(e,value)} variant="outlined" color="primary" sx={{ width: "fit-content", margin: "0 auto 5px auto" }} />
+        <TransitionsModal open={open} handleClose={handleClose} data={data}/>
+        </ThemeProvider>
         </>
       );  }
     
