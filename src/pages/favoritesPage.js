@@ -70,7 +70,7 @@ export default function FavoritesPage(props) {
 
     },[searchTerm,orderBy,photosFavs])
 console.log(myPhotos)
-console.log(myPhotos[8])
+
     //const filterPhotos = searchTerm.length ? myPhotos.filter(p => p.description.toLowerCase().includes(searchTerm.toLowerCase())) : myPhotos;
       
     return (

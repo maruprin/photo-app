@@ -29,7 +29,8 @@ export default function TransitionsModal(props) {
         console.log('entro en modal 2')
     };
     const downloadImage = () => {
-        fetch(props.data.urls)
+        console.log(props)
+        fetch(props.data.urls.full)
           .then(response => response.blob())
           .then(blobObject => {
             const blob = window.URL.createObjectURL(blobObject)
@@ -74,7 +75,7 @@ console.log(open2)
                 Width: {props.data.width}<br/>
                 Height: {props.data.height}<br/>
                 Likes: {props.data.likes}<br/>
-                Date: {props.data.updated_at}<br/>
+                Date saved: {new Date(props.data.dateImported).toLocaleDateString('en-US')}<br/>
                 
             
             </Typography>

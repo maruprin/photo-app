@@ -1,20 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
-export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) => {
+export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async ({query, currentPage}) => {
     const baseUrl = 'https://api.unsplash.com/'
     const apiKey = 'rWu0S9Zt18V3bWP9sXYyq1dVx3pc9Ut3CK7QUlbUlcQ'
+    const photoPerPage = '28';
     let url;
    
     if(query&&query.length){
-      url = `${baseUrl}search/photos?query=${query}&client_id=${apiKey}&per_page=28`
+      url = `${baseUrl}search/photos?query=${query}&page=${currentPage}&client_id=${apiKey}&per_page=${photoPerPage}`
       const response = await fetch(url);
       const json = await response.json();
-      return json.results;
+
+      return [...json.results,Math.ceil(response.headers.get('X-Total')/photoPerPage)];
     } else {
-      url = `${baseUrl}photos/random?client_id=${apiKey}&count=28`
-      const response = await fetch(url);
-      const json = await response.json();
-      return json;
+        url = `${baseUrl}photos/random?client_id=${apiKey}&count=${photoPerPage}`
+        const response = await fetch(url);
+        const json = await response.json();
+        return [...json, Math.ceil(response.headers.get('X-Total')/photoPerPage)]
     }
    
   })
@@ -24,7 +26,8 @@ export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) 
     initialState:{
         results:[],
         isLoading: false,
-        hasError: false
+        hasError: false,
+        totalPages: 1
     },
     reducers: {
       
@@ -38,8 +41,8 @@ export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) 
         .addCase(fetchPhotos.fulfilled, (state, action) => {
           state.isLoading = false
           state.hasError = false
-          state.results = action.payload
-          
+          state.results = action.payload.slice(0,action.payload.length-1)
+          state.totalPages=action.payload[action.payload.length-1]?state.totalPages=action.payload[action.payload.length-1]:10
         })
         .addCase(fetchPhotos.rejected, (state) => {
           state.isLoading = false
@@ -48,8 +51,6 @@ export const fetchPhotos = createAsyncThunk('photos/fetchPhotos', async (query) 
     }
   })
   
-
-
- 
   export default searchSlice.reducer;
   export const selectPhotos = (state) => state.photos.results;
+  export const selectPages = (state) => state.photos.totalPages;
