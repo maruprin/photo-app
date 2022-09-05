@@ -32,7 +32,7 @@ nav{
   padding: 10px;
 }
 .navLink:hover{
-  color: aqua;
+  color: #fbbead;
 }
 .input-search{
   height: 30px;
@@ -45,23 +45,7 @@ nav{
   width: 20%;
   border: 1px solid #8FE3CF
 }
-.link-start{
-  color: whitesmoke;
-  border: 1px solid  #8FE3CF;
-  background-color: #256D85 ;
-  border-radius: 20px;
-  width: 20%;
-  padding: 10px 30px 10px 30px;
-  text-decoration: none;
-  margin: 0 auto;
-  text-align: center;
-  display: block;
-  margin-top: 240px;
-}
-.link-start:hover{
-  background-color: #8FE3CF;
-  color:  #2B4865;
-}
+
 ul {
   display: inline;
   list-style-type: none;
