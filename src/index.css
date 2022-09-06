@@ -13,7 +13,7 @@ code {
     monospace;
 }
 .active{
-  color: #8FE3CF;
+  color: #fbbead;
   text-decoration: none;
   padding: 10px;
 }
@@ -32,7 +32,7 @@ nav{
   padding: 10px;
 }
 .navLink:hover{
-  color: #fbbead;
+  color: #8FE3CF;
 }
 .input-search{
   height: 30px;
@@ -55,6 +55,10 @@ li{
   margin-bottom: 30px;
   margin-right: 15px;
 }
+.css-1969cn9-MuiButtonBase-root-MuiPaginationItem-root{
+  color: white !important;
+  border: 1px solid rgba(143, 227, 207,0.3)!important;
+}
 @media (min-width: 600px) {
  li{
   /* 2 columnas*/
@@ -69,3 +73,4 @@ li{
      grid-template-columns: repeat(4, 1fr) !important;
     }
      }
+

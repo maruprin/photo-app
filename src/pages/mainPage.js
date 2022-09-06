@@ -19,9 +19,12 @@ export default function MainPage() {
             xl: "90px",
           },
           fontWeight: { xs: 400, sm: 300, md: 200, lg: 100, xl: 100 },
+          ":hover": {
+            color: "#fbbead",
+            }
         }}
       >
-        Welcome,
+        Welcome
       </Typography>
       <br />
       <Typography
@@ -54,6 +57,8 @@ export default function MainPage() {
             bgcolor: "#256D85",
             color: "#8FE3CF",
             borderRadius: '30px',
+            width: '200px',
+            height: '50px',
             ":hover": {
               cursor: "pointer",
               color: "#256D85",
