@@ -197,6 +197,7 @@ export default function FavoritesPage(props) {
             xl: "300px",
           },
           margin: "0 auto",
+          mb:30,
           width: {
             xs: "200px",
             sm: "200px",
