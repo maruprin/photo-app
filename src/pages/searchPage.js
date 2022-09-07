@@ -7,7 +7,7 @@ import Image from "../Components/image";
 import { Box, Pagination, TextField, ThemeProvider } from "@mui/material";
 import { paletaPagination } from "../styles/paletaPagination";
 import { darkTheme } from "../styles/darkTheme";
-import { SearchBar } from "../Components/searchBar";
+
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
@@ -42,9 +42,6 @@ export default function SearchPage() {
           </Box>
         </Box>
       </ThemeProvider>
-      {/* <TextField id="standard-basic" onChange={handleWhileSearching} placeholder='search your photos' label="search your photos" sx={{borderRadius: '30px', color: 'white'}} size='small'/> */}
-      {/* <input className='input-search' onChange={handleWhileSearching} type='text' placeholder='search your photos' /> */}
-
       <ImageList sx={{ width: "90%", margin: "0 auto" }}>
         {photosRes &&
           photosRes.length &&

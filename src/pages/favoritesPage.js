@@ -112,7 +112,7 @@ export default function FavoritesPage(props) {
           </Box>
         </Box>
       </ThemeProvider>
-      {/* <input className='input-search' type='text' onChange={(e)=>setSearchTerm(e.target.value)} placeholder='search by description' />  */}
+      
       {myPhotos.length === 0 ? (
         <h2
           style={{

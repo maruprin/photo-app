@@ -39,8 +39,7 @@ export default function Image(props){
     />
   <ImageListItemBar
     sx={{height: 50}}
-      title={item.description}
-      subtitle={item.author}
+      title={item.description < 1 ? "Untitled" : item.description}
       actionIcon={
 
           <IconButton
