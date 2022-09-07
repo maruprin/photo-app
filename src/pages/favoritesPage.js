@@ -20,6 +20,7 @@ import {
 import { paletaPagination } from "../styles/paletaPagination";
 import { darkTheme } from "../styles/darkTheme";
 import { useNavigate } from "react-router-dom";
+import image1 from './noResults.png'
 
 export default function FavoritesPage(props) {
   const [open, setOpen] = useState(false);
@@ -118,12 +119,12 @@ export default function FavoritesPage(props) {
           style={{
             color: "white",
             textAlign: "center",
-            width: 300,
+            width: 400,
             margin: "0 auto 50px",
             display: "block",
           }}
         >
-          No favorite photos
+          Sorry, no favorite photos yet!
         </h2>
       ) : (
         <ImageList sx={{ width: "90%", margin: "0 auto" }}>
@@ -170,13 +171,42 @@ export default function FavoritesPage(props) {
 
       <ThemeProvider theme={paletaPagination}>
         {numPages < 1 ? (
-          <Button
+         <> <Button
             onClick={handleClick}
-            sx={{ width: 300, margin: "0 auto", display: "block" }}
+            sx={{ width: 200, margin: "0 auto", display: "block", border: '1px solid #256D85',color:'#8FE3CF', backgroundColor:'#256D85', borderRadius: 20, padding: 3, marginBottom: 10, ":hover":{
+              bgcolor: ' #fbbead',
+              color:'#2B4865',
+              border: '1px solid #fbbead'
+            }}}
+       
             variant="contained"
           >
-            go to search page
+            GO TO SEARCH PAGE
           </Button>
+          <Box
+        sx={{
+          backgroundImage: `url(${image1})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: {
+            xs: "300px",
+            sm: "300px",
+            md: "300px",
+            lg: "300px",
+            xl: "300px",
+          },
+          margin: "0 auto",
+          width: {
+            xs: "300px",
+            sm: "300px",
+            md: "300px",
+            lg: "300px",
+            xl: "300px",
+          },
+        }}
+      ></Box>
+      </>
         ) : (
           <Pagination
             count={numPages}
