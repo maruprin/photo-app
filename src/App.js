@@ -8,10 +8,10 @@ import Navlink from './Components/navLink';
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
     <Navlink/>
     <Routes>
-      <Route path="/" exact element={<MainPage />} />
+      <Route path="/" element={<MainPage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/favorites" element={<FavoritesPage />} />
     </Routes>
