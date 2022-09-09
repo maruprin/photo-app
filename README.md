@@ -2,6 +2,10 @@ Bienvenido a nuestra app de fotos
 
 Puedes visualizar este proyecto en https://maruprin.github.io/photo-app/
 
+Puedes clonar el repo: https://github.com/maruprin/photo-app
+
+Es una app con React, por lo que puedes inicializarla con NPM START
+
 
 <img width="1230" alt="Captura de Pantalla 2022-09-09 a las 10 40 34" src="https://user-images.githubusercontent.com/99298404/189310169-0d6f904f-f908-4d23-89bb-b055246d7705.png">
 
